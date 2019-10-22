@@ -1,25 +1,27 @@
 # Docker-compose
 
-**Docker-compose** - make **compositions** of Docker-containers (on a single or very few servers).
+**Docker-compose** - make a **Composition** of docker-containers (for single server, usually).
 * Combine few docker-images into the Application
-* Configure Application (for multi envs/users)
-* Getting ENV-vars from `.env` file inside docker-compose dir
+* Configure Application (for multi environments/users)
+* Setting ENV-vars from `.env` file, located inside docker-compose dir
 * Mapping files/dirs between docker-containers and Host-OS
 * Mapping TCP/UDP ports between docker-containers and Host-OS
+* Can limit resources for docker-containers
+* Can scale services horizontally
 
 ## The right way to use
 
-1) **Make `docker-compose.yml` self-sufficient** - all services MUST BE listed in docker-compose.yml !
-  
-    `docker-compose.yml` SHOULD BE self-sufficient - Compose should be workable without `docker-compose.override.yml`.
-    
+1) **Make `docker-compose.yml` self-sufficient** - all required services MUST BE listed in `docker-compose.yml` !
+
+    `docker-compose.yml` MUST BE workable without `docker-compose.override.yml`.  
     `docker-compose.yml` MAY necessarily require variables from a `.env` file
 
-    Sometimes, users put description of some service(s) in `docker-compose.override.yml` (it's good when such a service is optional),
-    BUT if Application CAN'T work without this service(s) - you are wrong !
+    **Explanation**: Sometimes, users put description of some service(s)
+    in `docker-compose.override.yml` (it's good when such a service is optional),
+    BUT if your Application can't work without this service(s) - you are WRONG !
     
-1) **Make `docker-compose.override.yml` as Application-optional extension** - options,
- that extend or customize the application for specific cases.
+1) **Make `docker-compose.override.yml` as optional extension** - options,
+ that extend or customize the Application for specific cases.
 
     Like, `docker-compose.yml` contains MySQL-service definition
     ```yaml
@@ -59,14 +61,18 @@
     USER_GID=1000
     ```
 
-1) **Make the example of private/specific files** - put `.env.example` and `docker-compose.override.example.yml` in git-repo.
+1) **Make the example of private/specific files** - You MUST put **example** file(s) in git-repo, that necessary for Application.
 
-    You MUST put **example** file(s) in git-repo, that necessary for Application.
+    Put `.env.example` and `docker-compose.override.example.yml` in git-repo.
     
     Application MUST BE workable, if you just git-clone Project and copy example-files as current-files.
 
 1) **Mask env/user-specific files in .gitignore file** - do not put private data and current-configs in git-repo!
     ```gitignore
+    ## IDE
+    .idea
+    .vscode
+    
     # Current-config
     .env
     docker-compose.override.yml
